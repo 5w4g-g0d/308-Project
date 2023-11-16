@@ -17,14 +17,13 @@ public class Manager extends User{
     }
 
     public void DisplayQueue(){
-        //TODO: Print list of users within Register
+        //TODO: Print list of users with Register tag in DB
         return;
     }
 
     public void ApproveUser(Integer x){
-        //db.write User with ID x to database
+        //db.write User with ID x to remove register tag
         //If successful, print confirmation message
-        //Remove User with ID x from register
     }
 
     public void Activate(Integer x){
@@ -72,17 +71,17 @@ public class Manager extends User{
         return;
     }
 
-    public void getCourseDetails(Integer course){
-        db.read("SELECT * FROM Course WHERE Course_Id = " + course + ";");
-        return;
+    public String[] getCourseDetails(Integer course){
+        String[] results = db.read("SELECT * FROM Course WHERE Course_Id = " + course + ";");
+        return results;
     }
 
-    public void getModuleDetails(Integer module){
-        db.read("SELECT * FROM Module WHERE Module_Id = " + module + ";");
-        return;
+    public String[] getModuleDetails(Integer module){
+        String[] results = db.read("SELECT * FROM Module WHERE Module_Id = " + module + ";");
+        return results;
     }
 
-    public void updateCourse(String desc, Integer x){
+    public void updateDesc(String desc, Integer x){
         db.write("UPDATE Course SET Course_Description = '" + desc + "' WHERE Course_Id = " + x + ";");
         return;
     }

@@ -21,13 +21,11 @@ public class Student extends User {
     }
 
     public String getResult(String x){
-        String[] data = db.read("SELECT Total_Mark FROM Student_Module WHERE Student_Id = " + id + " AND Module_Id = " + x + ";");
+        String[] data = db.read("SELECT Exam_mark, Lab_mark FROM Student_Module WHERE Student_Id = " + id + " AND Module_Id = " + x + ";");
         if(data == null || data.length == 0){
             return "No results found for that module.";
-        }else if(data.length > 1){
-            return "Error: Multiple results returned. Please contact an administrator.";
         }else{
-            return data[0];
+            return data[0] + ", " + data[1];
         }
     }
 
