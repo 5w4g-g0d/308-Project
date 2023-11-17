@@ -16,28 +16,32 @@ public class Manager extends User{
         manages = Integer.parseInt(db.read("SELECT User_Id FROM User WHERE Managed_By_Id = " + id + ";")[0]);
     }
 
-    public void DisplayQueue(){
-        //TODO: Print list of users with Register tag in DB
-        return;
+    public String[] DisplayQueue(){
+        String[] result = db.read("SELECT User_Id FROM User WHERE Registered == 0;");
+        return result;
     }
 
     public void ApproveUser(Integer x){
-        //db.write User with ID x to remove register tag
-        //If successful, print confirmation message
+        db.write("UPDATE User SET Registered = " + 1 + " WHERE User_Id = " + x + ";");
+
+        String[] registered = db.read("SELECT * FROM User WHERE User_Id = " + x + " AND Registered = 1" );
+        if (registered != null){
+            System.out.println("User has been successfully registered.");
+        } 
     }
 
     public void Activate(Integer x){
-        //db.write User with ID x to be active
+        db.write("UPDATE User SET Active = " + 1 + " WHERE User_Id = " + x + ";");
         return;
     }
 
     public void Deactivate(Integer x){
-        //db.write User with ID x to be inactive
+        db.write("UPDATE User SET Active = " + 0 + " WHERE User_Id = " + x + ";");
         return;
     }
 
     public void passReset(String newPass, Integer x){
-        db.write("UPDATE users SET password = '" + newPass + "' WHERE id = " + x + ";");
+        db.write("UPDATE User SET Password = '" + newPass + "' WHERE Student_Id = " + x + ";");
         return;
     }
 

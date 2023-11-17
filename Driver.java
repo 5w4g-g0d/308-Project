@@ -21,6 +21,10 @@ public class Driver {
         }else if(result[10] == "0"){
             System.out.println("Error: Account is not active.");
             return;
+        }
+        else if(result[11] == "0"){
+            System.out.println("Error: Account is not registered.");
+            return;
         }else{
             String i = result[2];
             Boolean running = true;
