@@ -1,21 +1,38 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.sql.*;
+import java.io.*;
+import java.util.Scanner;
+import static java.lang.System.exit;
 
 public class DBConnect {
-    private Connection con;
-    private Statement st;
-
-
-    public DBConnect() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/DBNAME", "USERNAME", "PASSWORD");
-            st = con.createStatement();
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex);
+    private static Connection mysqlConn = null;
+    //this block will run only once when class is loaded into memory
+    static
+    {
+        String url = "jdbc:mysql:// ";
+        String dbName ="";
+        String user = "" ;
+        String password = "";
+        try {// Reading the connection parameters from “config.txt” file
+            Scanner sc = new Scanner(new File("config.txt"));
+            if (sc.hasNextLine()) url = url + sc.nextLine()+"/";
+            if (sc.hasNextLine()) dbName = sc.nextLine();
+            if (sc.hasNextLine()) user = sc.nextLine();
+            if (sc.hasNextLine()) password = sc.nextLine();
+            sc.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("An error occurred while reading config.txt");
+            exit(-1);
         }
+        try {Class.forName("com.mysql.cj.jdbc.Driver");
+            mysqlConn = DriverManager.getConnection(url+dbName, user,
+                    password);
+            System.out.println("MySQL Db Connection is successful");}
+        catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();}
     }
+    public static Connection getMysqlConnection()
+    {return mysqlConn;}
 
     
 
