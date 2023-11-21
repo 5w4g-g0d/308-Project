@@ -12,8 +12,9 @@ public class Driver {
     }
 
     public void login(String username, String password){
-        String[] result = db.read("SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "';");
-        if(result == null || result.length == 0){
+        String[] result = db.read("SELECT * FROM User WHERE username = '" + username + "' AND password = '" + password + "';");
+        System.out.println(result[0]);
+        if(result[0] == null){
             System.out.println("Error: Username and Password combination not found. Enter '1' to create a new user.");
             int One = in.nextInt();
             if(One == 1){
@@ -21,10 +22,10 @@ public class Driver {
             } else {
                 return;
             }
-        }else if(result.length > 1){
+        }/*else if(result.length > 1){
             System.out.println("Error: Multiple results returned. Please contact an administrator.");
             return;
-        }else if(result[10] == "0"){
+        }*/else if(result[10] == "0"){
             System.out.println("Error: Account is not active.");
             return;
         }
