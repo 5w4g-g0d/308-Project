@@ -225,6 +225,7 @@ public class Driver {
                     }
                 }
             break;
+
         }
     }
 
@@ -280,7 +281,6 @@ public class Driver {
         }
         details[3] = temp;
 
-
         System.out.println("Please enter your first name:");
         temp = in.nextLine();
         temp = valid_length(temp,"first name",20);
@@ -292,6 +292,7 @@ public class Driver {
         details[5] = temp;
 
         System.out.println("Please enter your gender(Male,Female,Non-Binary,Other):");
+
         temp = in.nextLine();
         while(!Objects.equals(temp, "Male") && !Objects.equals(temp, "Female") && !Objects.equals(temp, "Non-Binary") && !Objects.equals(temp, "Other")){
             System.out.println("Please enter one of the specified genders of Male, Female, Non-Binary and Other:");

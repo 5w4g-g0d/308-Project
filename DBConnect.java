@@ -33,6 +33,8 @@ public class DBConnect {
         catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();}
     }
+    public static Connection getMysqlConnection()
+    {return mysqlConn;}
 
     public String[] read(String statement){
         //Apply SELECT statement to Database. (Could construct here, or individually when read() is being called.)
