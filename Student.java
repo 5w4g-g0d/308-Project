@@ -5,9 +5,9 @@ public class Student extends User {
         db = x;
         id = Integer.parseInt(data[0]);
         username = data[1];
-        ManagedBy = Integer.parseInt(data[3]); //With the exception of login(), skip data[2], userType can be determined by class type.
-        email = data[4];
-        password = data[5];
+        ManagedBy = Integer.parseInt(data[4]); //With the exception of login(), skip data[2], userType can be determined by class type.
+        email = data[5];
+        password = data[2];
         firstName = data[6];
         lastName = data[7];
         gender = data[8];
