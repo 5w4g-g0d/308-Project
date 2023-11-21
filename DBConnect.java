@@ -1,5 +1,7 @@
 import java.sql.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import static java.lang.System.exit;
 
@@ -34,8 +36,6 @@ public class DBConnect {
     public static Connection getMysqlConnection()
     {return mysqlConn;}
 
-    
-
     public String[] read(String statement){
         //Apply SELECT statement to Database. (Could construct here, or individually when read() is being called.)
         //Read into array EITHER several fields of one record, or one field of several records.
@@ -46,13 +46,14 @@ public class DBConnect {
                 ResultSet rs = stmt.executeQuery(statement);
                 ResultSetMetaData rsmd = rs.getMetaData();
                 int columnsNumber = rsmd.getColumnCount();
-                String[] results = new String[columnsNumber];
+                List<String> results = new ArrayList<String>();
                 while(rs.next()){
                     for(int i=1; i<=columnsNumber; i++){
-                        results[i-1] = rs.getString(i);
+                        results.add(rs.getString(i));
                     }
                 }
-                return results;
+                String[] temp = new String[results.size()];
+                return results.toArray(temp);
             }
             catch(SQLException e){
                 e.printStackTrace();
@@ -60,10 +61,10 @@ public class DBConnect {
             }
         }
         return null;
-    } 
+    }
 
     public int write(String statement){
-        //As above, apply INSERT or UPDATE statement to Databse.
+        //As above, apply INSERT or UPDATE statement to Database.
         //!!Catch SQL errors here. Return 1 in instance of error!!
         if(mysqlConn != null){
             try{
@@ -74,7 +75,7 @@ public class DBConnect {
             catch(SQLException e){
                 e.printStackTrace();
                 return 1;
-        }    
+            }
         }
         return 1;
     }

@@ -11,8 +11,11 @@ public abstract class User {
     protected String dob;
 
     public void updatePass(String newPass){
-        db.write("UPDATE users SET password = '" + newPass + "' WHERE id = " + id + ";");
-        password = newPass;
+        int check = db.write("UPDATE User SET password = '" + newPass + "' WHERE User_id = " + id + ";");
+        if(check == 0) {
+            password = newPass;
+            System.out.println("Password updated to " + password);
+        }
         return;
     }
 
