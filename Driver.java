@@ -219,7 +219,7 @@ public class Driver {
     public void manager(Manager m){
         JOptionPane.showMessageDialog(null, "You have successfully logged in", "Manager", JOptionPane.PLAIN_MESSAGE);
         JFrame jmanager = new JFrame();
-        jmanager.setTitle("Lecturer");
+        jmanager.setTitle("Manager");
         jmanager.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jmanager.setSize(400,400);
         jmanager.setVisible(true);
