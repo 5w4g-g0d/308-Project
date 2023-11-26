@@ -472,7 +472,7 @@ public class Driver {
     }
 
     public void register2(String username, String password, String password2, String usertype, String email, String fname, String sname, String gender, String dob, String qualification, JFrame jregister){
-        String[] details = new String[8];
+        String[] details = new String[9];
         String temp;
         String temp2;
 
@@ -551,16 +551,21 @@ public class Driver {
         }
 
         details[7] = dob;
+
         if(details[2].equals("Lecturer")){
             if (qualification == "error"){
                 JOptionPane.showMessageDialog(null, "You have not selected your qualification", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            db.write("INSERT INTO User (Username,Password,User_Type,Email,First_Name,Surname,Gender,DOB,Active,Registered) VALUES ('"+details[0]+"','"+details[1]+"','"+details[2]+"','"+details[3]+"','"+details[4]+"','"+details[5]+"','"+details[6]+"','"+details[7]+"',0,0);");
-            String ID = db.read("SELECT User_Id FROM User WHERE Username = '" + details[0] + "';")[0];
-            db.write("UPDATE Module (Lecturer_Qualification) VALUES (" + qualification + ") WHERE Lecturer_Id == '" + ID + "';");
+            //db.write("INSERT INTO User (Username,Password,User_Type,Email,First_Name,Surname,Gender,DOB,Active,Registered) VALUES ('"+details[0]+"','"+details[1]+"','"+details[2]+"','"+details[3]+"','"+details[4]+"','"+details[5]+"','"+details[6]+"','"+details[7]+"',0,0);");
+            //String ID = db.read("SELECT User_Id FROM User WHERE Username = '" + details[0] + "';")[0];
+            //db.write("UPDATE Module (Lecturer_Qualification) VALUES (" + qualification + ") WHERE Lecturer_Id == '" + ID + "';");
+            details[8] = qualification;
+            //String sql = "INSERT INTO User (Username,Password,User_Type,Email,First_Name,Surname,Gender,DOB, Qualification, Active,Registered) VALUES ('"+details[0]+"','"+details[1]+"','"+details[2]+"','"+details[3]+"','"+details[4]+"','"+details[5]+"','"+details[6]+"','"+details[7]+"','"+details[8]+"',0,0);";
+            db.write("INSERT INTO User (Username,Password,User_Type,Email,First_Name,Surname,Gender,DOB, Qualification, Active,Registered) VALUES ('"+details[0]+"','"+details[1]+"','"+details[2]+"','"+details[3]+"','"+details[4]+"','"+details[5]+"','"+details[6]+"','"+details[7]+"','"+details[8]+"',0,0);");
+
         } else {
-            db.write("INSERT INTO User (Username,Password,User_Type,Email,First_Name,Surname,Gender,DOB,Active,Registered) VALUES ('"+details[0]+"','"+details[1]+"','"+details[2]+"','"+details[3]+"','"+details[4]+"','"+details[5]+"','"+details[6]+"','"+details[7]+"',0,0);");
+            db.write("INSERT INTO User (Username,Password,User_Type,Email,First_Name,Surname,Gender,DOB, Qualification, Active,Registered) VALUES ('"+details[0]+"','"+details[1]+"','"+details[2]+"','"+details[3]+"','"+details[4]+"','"+details[5]+"','"+details[6]+"','"+details[7]+"','"+"N/A" +"',0,0);");
         }
         JOptionPane.showMessageDialog(null, "You have successfully registered, a manager will approve your account shortly", "Success", JOptionPane.PLAIN_MESSAGE);
         jregister.setVisible(false);
