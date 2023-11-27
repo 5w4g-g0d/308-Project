@@ -1,49 +1,53 @@
 import java.io.File;
 
+import javax.swing.JOptionPane;
+
 public class Lecturer extends User {
-    Integer module;
+    String[] modules;
     
     public Lecturer(String[] data, DBConnect x){
-        db = x;
-        id = Integer.parseInt(data[0]);
-        username = data[1];
-        ManagedBy = Integer.parseInt(data[4]); //With the exception of login(), skip data[2], userType can be determined by class type.
-        email = data[5];
-        password = data[2];
+        db        = x;
+        id        = Integer.parseInt(data[0]);
+        username  = data[1];
+        ManagedBy = Integer.parseInt(data[4]);
+        email     = data[5];
+        password  = data[2];
         firstName = data[6];
-        lastName = data[7];
-        gender = data[8];
-        dob = data[9];
+        lastName  = data[7];
+        gender    = data[8];
+        dob       = data[9];
         
-        String[] result = db.read("SELECT Module_Id FROM Module WHERE Lecturer_Id = " + id + ";");
-        if(result == null || result.length == 0){
-            System.out.println("Error: No modules found for this lecturer.");
-        }else if(result.length > 1){
-            System.out.println("Error: Multiple results returned. Please contact an administrator.");
-        }else{
-            module = Integer.parseInt(result[0]);
-        }
+        modules = db.read("SELECT Module_Id FROM Student_Module WHERE Student_Id = " + id + ";");
     }
 
-    public Integer getModule(){
-        return module;
+    public String[] getModule(){
+        if(modules.length == 0){
+            return null;
+        }
+        return modules;
     }
 
     //ALL methods pertaining to marks will need to be adjusted for Lab and Exam marks.
-    public void setMark(Integer student, Integer mark){
-        db.write("UPDATE Student_Module SET Total_Mark = " + mark + " WHERE Student_Id = " + student + " AND Module_Id = " + module + ";");
+    public void setExamMark(Integer student, Integer mark, Integer module){
+        db.write("UPDATE Student_Module SET Exam_Mark = " + mark + " WHERE Student_Id = " + student + " AND Module_Id = " + module + ";");
+        JOptionPane.showMessageDialog(null, "Student '"+student+"' has been given a '"+mark+"' for the module '"+module+"' exam.", "Mark Assigned", JOptionPane.PLAIN_MESSAGE);
     }
 
-    public void updateModule(String msg){
+    public void setLabMark(Integer student, Integer mark, Integer module){
+        db.write("UPDATE Student_Module SET Lab_Mark = " + mark + " WHERE Student_Id = " + student + " AND Module_Id = " + module + ";");
+        JOptionPane.showMessageDialog(null, "Student '"+student+"' has been given a '"+mark+"' for the module '"+module+"' lab.", "Mark Assigned", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    public void updateModule(String msg, Integer module){
         db.write("UPDATE Module SET Module_Description = '" + msg + "' WHERE Module_Id = " + module + ";");
+        JOptionPane.showMessageDialog(null, "Module '"+module+"' updated.", "Module Updated", JOptionPane.PLAIN_MESSAGE);
     }
 
-    //NEEDS RESTRUCTURING
-    /*public void uploadNotes(String type, File f){
+    /*public void uploadNotes(String type, File f, Integer module){
         db.write("UPDATE Module SET " + type + " = '"+ f + "' WHERE Module_Id = " + module + ";");
     }*/
 
-    public String[] getStudents(){
+    public String[] getStudents(Integer module){
         return db.read("SELECT Student_Id FROM Student_Module WHERE Module_Id = " + module + ";");
     }
 }
