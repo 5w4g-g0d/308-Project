@@ -43,8 +43,8 @@ public class Lecturer extends User {
         JOptionPane.showMessageDialog(null, "Module '"+module+"' updated.", "Module Updated", JOptionPane.PLAIN_MESSAGE);
     }
 
-    /*public void uploadNotes(String type, File f, Integer module){
-        db.write("UPDATE Module SET " + type + " = '"+ f + "' WHERE Module_Id = " + module + ";");
+    /*public void uploadNotes(String type, String content, Integer module){
+        generate a .txt containing 'content' and save it to the given module. Type should flag whether the file is for lecture or lab notes
     }*/
 
     public String[] getStudents(Integer module){
