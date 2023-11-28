@@ -37,9 +37,6 @@ public class DBConnect {
     {return mysqlConn;}
 
     public String[] read(String statement){
-        //Apply SELECT statement to Database. (Could construct here, or individually when read() is being called.)
-        //Read into array EITHER several fields of one record, or one field of several records.
-        //!!Catch SQL errors here. Return 1 in instance of error, 0 for instance of no results!!
         if(mysqlConn != null){
             try{
                 Statement stmt = mysqlConn.createStatement();
@@ -64,8 +61,6 @@ public class DBConnect {
     }
 
     public int write(String statement){
-        //As above, apply INSERT or UPDATE statement to Database.
-        //!!Catch SQL errors here. Return 1 in instance of error!!
         if(mysqlConn != null){
             try{
                 Statement stmt = mysqlConn.createStatement();

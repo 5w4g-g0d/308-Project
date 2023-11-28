@@ -195,7 +195,7 @@ public class Driver {
                     System.out.println("NOT WORKING RN");
                             System.out.println("Enter the notes type: ");
                             String type = in.nextLine();
-                            l.uploadNotes(type, new File("testNotes.txt"));
+                            l.uploadNotes(type, content, module);
                     break;
 
                 case "6":

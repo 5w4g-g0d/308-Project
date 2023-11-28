@@ -109,6 +109,24 @@ public class Manager extends User{
         
 
     public void setDecision(Integer student, Integer module, String decision){
+        String[] rules = db.read("SELECT Rule_Id FROM Module_Rules WHERE Module_Id = '"+module+"';");
+        Boolean PassRule = false;
+        for(String rule:rules){
+            if(Integer.parseInt(rule) == 3){
+                PassRule = true;
+            }
+        }
+        String[] marks = db.read("SELECT Exam_Mark, Lab_Mark FROM Student_Module WHERE Student_Id = '"+student+"' AND Module_Id = '"+module+"';");
+        Integer totalMark = (Integer.parseInt(marks[0]) + Integer.parseInt(marks[1]));
+        if(decision == "Award"){
+            if(totalMark < 80){
+                JOptionPane.showMessageDialog(null, "This student has not achieved the required mark to be awarded this module.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(totalMark < 100 && PassRule){
+                JOptionPane.showMessageDialog(null, "This student has not achieved the required mark to be awarded this module.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
         db.write("UPDATE Student_Module SET Decision = '" + decision + "' WHERE Student_Id = " + student + " AND Module_Id = " + module + ";");
         JOptionPane.showMessageDialog(null, "Student Id: '"+student+"' has been given the decision: '"+decision+"' for module: '"+module+"'.", "Decision Made", JOptionPane.PLAIN_MESSAGE);
     }

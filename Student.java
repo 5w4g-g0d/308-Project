@@ -1,3 +1,5 @@
+import java.io.*;
+
 import javax.swing.JOptionPane;
 
 public class Student extends User {
@@ -42,6 +44,23 @@ public class Student extends User {
             return "Err_Flag";
         }else{
             return data[0];
+        }
+    }
+
+    public File[] getNotes(Integer x) throws IOException{
+        String[] data = db.read("SELECT Description, Data FROM Notes WHERE Module_Id = " + x + ";");
+        if(data.length == 0){
+            JOptionPane.showMessageDialog(null, "No notes found for that module.", "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }else{
+            File[] files = new File[data.length/2];
+            for(int i = 0; i < data.length; i+=2){
+                BufferedWriter writer = new BufferedWriter(new FileWriter(data[i] + ".txt"));
+                writer.write(data[i+1]);
+                writer.close();
+                files[i/2] = new File(data[i] + ".txt");
+            }
+            return files;
         }
     }
 }

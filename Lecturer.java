@@ -43,9 +43,10 @@ public class Lecturer extends User {
         JOptionPane.showMessageDialog(null, "Module '"+module+"' updated.", "Module Updated", JOptionPane.PLAIN_MESSAGE);
     }
 
-    /*public void uploadNotes(String type, String content, Integer module){
-        generate a .txt containing 'content' and save it to the given module. Type should flag whether the file is for lecture or lab notes
-    }*/
+    public void uploadNotes(String desc, String content, Integer module){
+        db.write("INSERT INTO Notes (Module_Id, Description, Data) VALUES ('" + module + "', '" + desc + "', '"+content+"';");
+        JOptionPane.showMessageDialog(null, "Notes uploaded.", "Notes Uploaded", JOptionPane.PLAIN_MESSAGE);
+    }
 
     public String[] getStudents(Integer module){
         return db.read("SELECT Student_Id FROM Student_Module WHERE Module_Id = " + module + ";");
