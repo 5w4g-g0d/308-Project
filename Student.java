@@ -6,7 +6,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class Student extends User {
     String[] modules;
-    
+    public String[][] testData;
+
     public Student(String[] data, DBConnect x){
         db        = x;
         id        = Integer.parseInt(data[0]);
@@ -45,6 +46,9 @@ public class Student extends User {
             rowData[i][5] = result2[0];
             rowData[i][6] = result2[1];
             rowData[i][7] = result2[2];
+
+            this.testData = rowData;
+
         }
 
         String[] columnNames = {"Module Id", "Module Name", "Module Description", "Semester", "Credits", "Exam Mark", "Lab Mark", "Decision"};
@@ -57,6 +61,7 @@ public class Student extends User {
 
         frame.setVisible(true);
 
+        this.testData = rowData;
     }
 
     public void viewCourse() {
@@ -89,6 +94,7 @@ public class Student extends User {
 
         frame.setVisible(true);
 
+        this.testData = rowData;
     }
 
     public void viewNoteInfo() {
@@ -122,6 +128,7 @@ public class Student extends User {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         frame.setVisible(true);
+        this.testData = rowData;
 
     }
 

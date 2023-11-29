@@ -65,13 +65,13 @@ public class DBConnect {
             try{
                 Statement stmt = mysqlConn.createStatement();
                 stmt.executeUpdate(statement);
-                return 0;
+                return 1;
             }
             catch(SQLException e){
                 e.printStackTrace();
-                return 1;
+                return 0;
             }
         }
-        return 1;
+        return 0;
     }
 }

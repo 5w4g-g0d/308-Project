@@ -40,6 +40,11 @@ public class Lecturer extends User {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(750,200);
 
+        if (module.length == 0) {
+            JOptionPane.showMessageDialog(null, "No modules found for this lecturer.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         String[][] rowData = new String[1][6];
         String[] result = db.read("SELECT Module_Name, Course_Id, Module_Description, Semester, Credits FROM Module WHERE Module_Id = " + module[0] + ";");
         rowData[0][0] = module[0];
