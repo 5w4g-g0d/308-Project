@@ -22,6 +22,12 @@ public class Driver {
         login1();
     }
 
+    public void closeFrame(JFrame frame){
+        frame.setVisible(false);
+        frame.dispose();
+        startup();
+    }
+
     public void login1(){
         JPanel panel2 = new JPanel();
         panel2.setLayout(null);
@@ -48,11 +54,11 @@ public class Driver {
         panel2.add(labelp);
         panel2.setVisible(true);
 
-        submit.addActionListener(e -> login2(usernamefield.getText(), passwordfield.getText()));
+        submit.addActionListener(e -> login2(usernamefield.getText(), passwordfield.getText(), panel2));
 
     }
 
-    public void login2(String username, String password){
+    public void login2(String username, String password, JPanel panel){
 
         String[] result = db.read("SELECT * FROM User WHERE username = '" + username + "' AND password = '" + password + "';");
         if(result.length == 0){
@@ -73,19 +79,22 @@ public class Driver {
         }
 
         String i = result[3];
+        panel.setVisible(false);
         frame1.setVisible(false);
         frame1.dispose();
-        boolean running = true;
         switch(i) {
             case "Student":
+                JOptionPane.showMessageDialog(null, "You have successfully logged in", "Student", JOptionPane.PLAIN_MESSAGE);
                 Student s = new Student(result, db);
                 student(s);
                 return;
             case "Lecturer":
+                JOptionPane.showMessageDialog(null, "You have successfully logged in", "Lecturer", JOptionPane.PLAIN_MESSAGE);
                 Lecturer l = new Lecturer(result, db);
                 lecturer(l);
                 return;
             case "Manager":
+                JOptionPane.showMessageDialog(null, "You have successfully logged in", "Manager", JOptionPane.PLAIN_MESSAGE);
                 Manager m = new Manager(result, db);
                 manager(m);
                 return;
@@ -93,208 +102,388 @@ public class Driver {
     }
 
     public void student(Student s){
-        JOptionPane.showMessageDialog(null, "You have successfully logged in", "Student", JOptionPane.PLAIN_MESSAGE);
-        JFrame jstudent = new JFrame();
-        jstudent.setTitle("Student");
-        jstudent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jstudent.setSize(400,400);
-        jstudent.setVisible(true);
+        ImageIcon image = new ImageIcon("logo.jpg");
 
-            /*System.out.println("\n\nWhat would you like to do?");
-            System.out.println("1. Change Password");
-            System.out.println("2. View your modules");
-            System.out.println("3. View Results");
-            System.out.println("4. View Decision");
-            System.out.println("5. View Notes");
-            System.out.println("0. Exit");
-            String choice = in.nextLine();
-            switch(choice){
-                case "1":
-                    System.out.println("Enter new password: ");
-                    s.updatePass(in.nextLine());
-                    break;
-                case "2":
-                    String[] modules = s.getModules();
-                    for (String module : modules) {
-                        System.out.println(module);
-                    }
-                    break;
-                case "3":
-                    System.out.println("Enter Module code: ");
-                    String j = in.nextLine();
-                    System.out.println(s.getResult(j));
-                    break;
-                case "4":
-                    System.out.println("Enter Module code: ");
-                    String k = in.nextLine();
-                    System.out.println(s.getDecision(k));
-                    break;
-                case "5":
-                    System.out.println("Enter Module code: ");
-                    String l = in.nextLine();
-                    System.out.println(Arrays.toString(db.read("SELECT Lab_notes FROM Module WHERE Module_Id = " + l + ";")));
-                    System.out.println(Arrays.toString(db.read("SELECT Lecture_notes FROM Module WHERE Module_Id = " + l + ";")));
-                    return;
-                case "0":
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid input.");
-                    break;
-            }
-        }*/
+        JFrame jstudent = new JFrame();
+
+        JPanel panel = new JPanel();
+
+        jstudent.setTitle("Student");
+        jstudent.setIconImage(image.getImage());
+        jstudent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jstudent.setSize(400,450);
+        jstudent.setResizable(false);
+
+        panel.setVisible(true);
+        panel.setLayout(new GridLayout(6,1));
+
+        JButton changePass = new JButton();
+        changePass.addActionListener(e -> s.updatePass(panel, jstudent));
+        changePass.setText("Change Password");
+        changePass.setFocusable(false);
+
+        JButton viewMod = new JButton();
+        viewMod.addActionListener(e -> s.viewModules());
+        viewMod.setText("View Modules");
+        viewMod.setFocusable(false);
+
+        JButton viewCourse = new JButton();
+        viewCourse.addActionListener(e -> s.viewCourse());
+        viewCourse.setText("View Course Details");
+        viewCourse.setFocusable(false);
+
+        JButton viewNotes = new JButton();
+        viewNotes.addActionListener(e -> s.viewNoteInfo());
+        viewNotes.setText("View Note Information");
+        viewNotes.setFocusable(false);
+
+        JButton getNotes = new JButton();
+        getNotes.addActionListener(e -> s.getNotes1());
+        getNotes.setText("Download Notes");
+        getNotes.setFocusable(false);
+
+        JButton logout = new JButton();
+        logout.addActionListener(e -> closeFrame(jstudent));
+        logout.setText("Logout");
+        logout.setFocusable(false);
+
+        panel.add(changePass);
+        panel.add(viewMod);
+        panel.add(viewCourse);
+        panel.add(viewNotes);
+        panel.add(getNotes);
+        panel.add(logout);
+
+        jstudent.add(panel);
+
+        jstudent.setVisible(true);
     }
 
     public void lecturer(Lecturer l){
-        JOptionPane.showMessageDialog(null, "You have successfully logged in", "Lecturer", JOptionPane.PLAIN_MESSAGE);
+        ImageIcon image = new ImageIcon("logo.jpg");
+
         JFrame jlecturer = new JFrame();
+
+        JPanel panel = new JPanel();
+
         jlecturer.setTitle("Lecturer");
+        jlecturer.setIconImage(image.getImage());
         jlecturer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jlecturer.setSize(400,400);
+        jlecturer.setSize(400,750);
+        jlecturer.setResizable(false);
+
+        JButton changePass = new JButton();
+        changePass.addActionListener(e -> l.updatePass(panel, jlecturer));
+        changePass.setText("Change Password");
+        changePass.setFocusable(false);
+
+        JButton viewMod = new JButton();
+        viewMod.addActionListener(e -> l.viewModule());
+        viewMod.setText("View Module Details");
+        viewMod.setFocusable(false);
+
+        JButton updateName = new JButton();
+        updateName.addActionListener(e -> l.updateModuleName());
+        updateName.setText("Update Module Name");
+        updateName.setFocusable(false);
+
+        JButton updateDescription = new JButton();
+        updateDescription.addActionListener(e -> l.updateModuleDescription());
+        updateDescription.setText("Update Module Description");
+        updateDescription.setFocusable(false);
+
+        JButton updateSemester = new JButton();
+        updateSemester.addActionListener(e -> l.updateModuleSemester());
+        updateSemester.setText("Update Module Semester");
+        updateSemester.setFocusable(false);
+
+        JButton updateCredits = new JButton();
+        updateCredits.addActionListener(e -> l.updateModuleCredits());
+        updateCredits.setText("Update Module Credits");
+        updateCredits.setFocusable(false);
+
+        JButton uploadNotes = new JButton();
+        uploadNotes.addActionListener(e -> l.uploadNotes1());
+        uploadNotes.setText("Uplaod Notes");
+        uploadNotes.setFocusable(false);
+
+        JButton viewStudents = new JButton();
+        viewStudents.addActionListener(e -> l.viewStudents());
+        viewStudents.setText("View Students in Module");
+        viewStudents.setFocusable(false);
+
+        JButton changeMarks = new JButton();
+        changeMarks.addActionListener(e -> l.setMarks());
+        changeMarks.setText("Set Student Marks");
+        changeMarks.setFocusable(false);
+
+        JButton logout = new JButton();
+        logout.addActionListener(e -> closeFrame(jlecturer));
+        logout.setText("Logout");
+        logout.setFocusable(false);
+
+        panel.setVisible(true);
+        panel.setLayout(new GridLayout(10,1));
+
+        panel.add(changePass);
+        panel.add(viewMod);
+        panel.add(updateName);
+        panel.add(updateDescription);
+        panel.add(updateSemester);
+        panel.add(updateCredits);
+        panel.add(uploadNotes);
+        panel.add(viewStudents);
+        panel.add(changeMarks);
+        panel.add(logout);
+
+        jlecturer.add(panel);
+
         jlecturer.setVisible(true);
-
-        /*System.out.println("\n\nLogin Success! Welcome...");
-        while(running) {
-            System.out.println("\n\nWhat would you like to do?");
-            System.out.println("1. Change Password");
-            System.out.println("2. View my module");
-            System.out.println("3. Return a student's mark");
-            System.out.println("4. Update my module");
-            System.out.println("5. Upload notes");
-            System.out.println("6. View my students");
-            System.out.println("0. Exit");
-            String choice = in.nextLine();
-
-            switch (choice) {
-                case "1":
-                    System.out.println("Enter new password: ");
-                    l.updatePass(in.nextLine());
-                    break;
-
-                case "2":
-                    System.out.println(l.getModule());
-                    break;
-
-                case "3":
-                    System.out.println("Enter a student's ID: ");
-                    Integer id = in.nextInt();
-                    in.nextLine();
-                    System.out.println("Enter their mark: ");
-                    Integer score = in.nextInt();
-                    in.nextLine();
-                    l.setMark(id, score);
-                    break;
-
-                case "4":
-                    System.out.println("Enter the new description: ");
-                    String desc = in.nextLine();
-                    l.updateModule(desc);
-                    break;
-
-                case "5":
-                    System.out.println("NOT WORKING RN");
-                            System.out.println("Enter the notes type: ");
-                            String type = in.nextLine();
-                            l.uploadNotes(type, content, module);
-                    break;
-
-                case "6":
-                    String[] res = l.getStudents();
-                    for (String re : res) {
-                        System.out.println(re);
-                    }
-
-                case "0":
-                    running = false;
-                    break;
-
-                default:
-                    System.out.println("Invalid input.");
-                    break;
-            }
-        }*/
-
     }
 
     public void manager(Manager m){
-        JOptionPane.showMessageDialog(null, "You have successfully logged in", "Manager", JOptionPane.PLAIN_MESSAGE);
+        ImageIcon image = new ImageIcon("logo.jpg");
+
         JFrame jmanager = new JFrame();
+
+        JPanel panel = new JPanel();
+
         jmanager.setTitle("Manager");
+        jmanager.setIconImage(image.getImage());
         jmanager.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jmanager.setSize(400,400);
+        jmanager.setSize(400,375);
+        jmanager.setResizable(false);
+
+        JButton changePass = new JButton();
+        changePass.addActionListener(e -> m.updatePass(panel, jmanager));
+        changePass.setText("Change Password");
+        changePass.setFocusable(false);
+
+        JButton accountM = new JButton();
+        accountM.addActionListener(e -> accountManagement(panel, jmanager, m));
+        accountM.setText("Account Management");
+        accountM.setFocusable(false);
+
+        JButton moduleM = new JButton();
+        moduleM.addActionListener(e -> moduleManagement(panel, jmanager, m));
+        moduleM.setText("Module/Course Management");
+        moduleM.setFocusable(false);
+
+        JButton bRules = new JButton();
+        bRules.addActionListener(e -> businessRules(panel, jmanager, m));
+        bRules.setText("Business Rule Management");
+        bRules.setFocusable(false);
+
+        JButton logout = new JButton();
+        logout.addActionListener(e -> closeFrame(jmanager));
+        logout.setText("Logout");
+        logout.setFocusable(false);
+
+        panel.setVisible(true);
+        panel.setLayout(new GridLayout(5,1));
+
+        panel.add(changePass);
+        panel.add(accountM);
+        panel.add(moduleM);
+        panel.add(bRules);
+        panel.add(logout);
+
+        jmanager.add(panel);
+
         jmanager.setVisible(true);
+    }
 
+    public void accountManagement(JPanel panel1, JFrame frame, Manager m){
+        panel1.setVisible(false);
 
-        /*Integer inp;
-        System.out.println("\n\nLogin Success! Welcome...");
-        while(running) {
-            System.out.println("\n\nWhat would you like to do?");
-            System.out.println("1. Change Password");
-            System.out.println("2. Account management menu >>");
-            System.out.println("3. Module management menu >>");
-            System.out.println("4. Business rules menu >>");
-            System.out.println("0. Exit");
-            String choice = in.nextLine();
+        JPanel panel2 = new JPanel();
 
-            switch(choice){
-                case "1":
-                    System.out.println("Enter new password: ");
-                    m.updatePass(in.nextLine());
-                    break;
+        frame.setSize(400,600);
 
-                case "2":
-                    boolean menuRunning = true;
-                    while(menuRunning) {
-                        System.out.println("\n\nAccount management menu");
-                        System.out.println("1. View accounts awaiting registration");
-                        System.out.println("2. Approve a new account");
-                        System.out.println("3. Toggle account activity");
-                        System.out.println("4. Reset a password");
-                        System.out.println("5. Set a student's decision");
-                        System.out.println("0. Return");
-                        String menuChoice = in.nextLine();
+        JButton viewWF = new JButton();
+        viewWF.addActionListener(e -> m.viewWorkflow());
+        viewWF.setText("View sign up workflow");
+        viewWF.setFocusable(false);
 
-                        switch (menuChoice) {
-                            case "1":
-                                m.DisplayQueue();
-                                break;
+        JButton approveU = new JButton();
+        approveU.addActionListener(e -> m.approveUser());
+        approveU.setText("Approve User");
+        approveU.setFocusable(false);
 
-                            case "2":
-                                System.out.print("Enter target user ID: ");
-                                inp = in.nextInt();
-                                in.nextLine();
-                                m.ApproveUser(inp);
-                                break;
+        JButton removeU = new JButton();
+        removeU.addActionListener(e -> m.removeFromWorkflow());
+        removeU.setText("Remove User From Workflow");
+        removeU.setFocusable(false);
 
-                            case "3":
-                                System.out.print("Enter target user ID: ");
-                                inp = in.nextInt();
-                                in.nextLine();
-                                System.out.print("Enter '1' to activate, or '0' to deactivate: ");
-                                String toggle = in.nextLine();
-                                if(Objects.equals(toggle, "1")){
-                                    m.activate(inp);
-                                }else if(Objects.equals(toggle, "2")){
-                                    m.deactivate(inp);
-                                }
+        JButton viewU = new JButton();
+        viewU.addActionListener(e -> m.viewUsers());
+        viewU.setText("View Users That I Manage");
+        viewU.setFocusable(false);
 
-                            case "0":
-                                menuRunning = false;
-                                break;
+        JButton activateU = new JButton();
+        activateU.addActionListener(e -> m.activateUser());
+        activateU.setText("Activate User");
+        activateU.setFocusable(false);
 
-                            default:
-                                System.out.println("Invalid input. Try again.");
-                        }
-                    }
-                    break;
-                case "0":
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid input. Please try again.");
-                    break;
-            }
-        } */
+        JButton deactivateU = new JButton();
+        deactivateU.addActionListener(e -> m.deactivateUser());
+        deactivateU.setText("Deactivate User");
+        deactivateU.setFocusable(false);
+
+        JButton resetP = new JButton();
+        resetP.addActionListener(e -> m.passReset());
+        resetP.setText("Reset User Password");
+        resetP.setFocusable(false);
+
+        JButton back = new JButton();
+        back.addActionListener(e -> closePanelM(frame, m));
+        back.setText("Back");
+        back.setFocusable(false);
+
+        panel2.setVisible(true);
+        panel2.setLayout(new GridLayout(8,1));
+
+        panel2.add(viewWF);
+        panel2.add(approveU);
+        panel2.add(removeU);
+        panel2.add(viewU);
+        panel2.add(activateU);
+        panel2.add(deactivateU);
+        panel2.add(resetP);
+        panel2.add(back);
+
+        frame.add(panel2);
+    }
+
+    public void moduleManagement(JPanel panel1, JFrame frame, Manager m) {
+        panel1.setVisible(false);
+
+        JPanel panel2 = new JPanel();
+
+        frame.setSize(400, 750);
+
+        JButton viewM = new JButton();
+        viewM.addActionListener(e -> m.viewModule());
+        viewM.setText("View Modules");
+        viewM.setFocusable(false);
+
+        JButton viewC = new JButton();
+        viewC.addActionListener(e -> m.viewCourse());
+        viewC.setText("View Courses");
+        viewC.setFocusable(false);
+
+        JButton addM = new JButton();
+        addM.addActionListener(e -> m.addModule());
+        addM.setText("Add Module");
+        addM.setFocusable(false);
+
+        JButton addC = new JButton();
+        addC.addActionListener(e -> m.addCourse());
+        addC.setText("Add Course");
+        addC.setFocusable(false);
+
+        JButton updateC = new JButton();
+        updateC.addActionListener(e -> m.updateCourse());
+        updateC.setText("Update Course");
+        updateC.setFocusable(false);
+
+        JButton assignM = new JButton();
+        assignM.addActionListener(e -> m.assignModule());
+        assignM.setText("Assign Module to Lecturer");
+        assignM.setFocusable(false);
+
+        JButton enroll = new JButton();
+        enroll.addActionListener(e -> m.enrollStudent());
+        enroll.setText("Enroll Student");
+        enroll.setFocusable(false);
+
+        JButton results = new JButton();
+        results.addActionListener(e -> m.getResults());
+        results.setText("View Managed Students Results");
+        results.setFocusable(false);
+
+        JButton decision = new JButton();
+        decision.addActionListener(e -> m.setDecision());
+        decision.setText("Issue Student Decision");
+        decision.setFocusable(false);
+
+        JButton back = new JButton();
+        back.addActionListener(e -> closePanelM(frame, m));
+        back.setText("Back");
+        back.setFocusable(false);
+
+        panel2.setVisible(true);
+        panel2.setLayout(new GridLayout(10,1));
+
+        panel2.add(viewM);
+        panel2.add(viewC);
+        panel2.add(addM);
+        panel2.add(addC);
+        panel2.add(updateC);
+        panel2.add(assignM);
+        panel2.add(enroll);
+        panel2.add(results);
+        panel2.add(decision);
+        panel2.add(back);
+
+        frame.add(panel2);
+    }
+
+    public void businessRules(JPanel panel1, JFrame frame, Manager m){
+        panel1.setVisible(false);
+
+        JPanel panel2 = new JPanel();
+
+        frame.setSize(400, 450);
+
+        JButton viewRules = new JButton();
+        viewRules.addActionListener(e -> m.viewBusinessRules());
+        viewRules.setText("View Business Rules");
+        viewRules.setFocusable(false);
+
+        JButton addCR = new JButton();
+        addCR.addActionListener(e -> m.addRuleCourse());
+        addCR.setText("Add Course Business Rule");
+        addCR.setFocusable(false);
+
+        JButton remCR = new JButton();
+        remCR.addActionListener(e -> m.remRuleCourse());
+        remCR.setText("Remove Course Business Rule");
+        remCR.setFocusable(false);
+
+        JButton addMR = new JButton();
+        addMR.addActionListener(e -> m.addRuleModule());
+        addMR.setText("Add Module Business Rule");
+        addMR.setFocusable(false);
+
+        JButton remMR = new JButton();
+        remMR.addActionListener(e -> m.remRuleModule());
+        remMR.setText("Remove Module Business Rule");
+        remMR.setFocusable(false);
+
+        JButton back = new JButton();
+        back.addActionListener(e -> closePanelM(frame, m));
+        back.setText("Back");
+        back.setFocusable(false);
+
+        panel2.setVisible(true);
+        panel2.setLayout(new GridLayout(6,1));
+
+        panel2.add(viewRules);
+        panel2.add(addCR);
+        panel2.add(remCR);
+        panel2.add(addMR);
+        panel2.add(remMR);
+        panel2.add(back);
+
+        frame.add(panel2);
+
+    }
+
+    public void closePanelM(JFrame frame, Manager m){
+        frame.setVisible(false);
+        frame.dispose();
+        manager(m);
     }
 
     public void register1() {
@@ -490,7 +679,6 @@ public class Driver {
             return;
         }
         if(!Objects.equals(password, password2)){
-            System.out.println("Your passwords do not match, please re enter your password:");
             JOptionPane.showMessageDialog(null, "Your passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -602,15 +790,14 @@ public class Driver {
             } 
         }else{is_leap_year = false;}
         return is_leap_year;
-    } 
-    
-    
-    public static void main(String[] args){
+    }
+
+    public static void startup() {
         Driver d = new Driver();
 
         JPanel panel1 = new JPanel();
 
-        ImageIcon image = new ImageIcon("mongey.jpg");
+        ImageIcon image = new ImageIcon("logo.jpg");
 
         JButton Lbutton = new JButton();
         //if login button is clicked start the login function
@@ -621,6 +808,7 @@ public class Driver {
         JButton Rbutton = new JButton();
         //if register button is clicked start the register function
         Rbutton.addActionListener(e -> d.register1());
+
         Rbutton.setText("Register");
         Rbutton.setFocusable(false);
 
@@ -640,5 +828,9 @@ public class Driver {
         panel1.setVisible(true);
 
         d.in.close();
+    }
+
+    public static void main(String[] args){
+        startup();
     }
 }
