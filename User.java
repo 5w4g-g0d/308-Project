@@ -81,33 +81,5 @@ public abstract class User {
         }
     }
 
-    public String getUsername(){
-        return username;
-    }
-
-    public String getEmail(){
-        return email;
-    }
-
-    public String getPassword(){
-        return password;
-    }
-
-    public Integer getID(){
-        return id;
-    }
-
-    public String getName(){
-        return firstName + " " + lastName;
-    }
-
-    public String getGender(){
-        return gender;
-    }
-
-    public String getDOB(){
-        return dob;
-    }
-
     public String getType() {return userType;}
 }

@@ -1392,17 +1392,4 @@ public class Manager extends User{
             JOptionPane.showMessageDialog(null, "Module "+module+" no longer has Rule "+rule+".", "Course Rule Removed", JOptionPane.PLAIN_MESSAGE);
         }
     }
-
-    public void newCourse(Integer id, String name, String desc){
-        db.write("INSERT INTO Course VALUES (" + id + ", '" + name + "', '" + desc + "');");
-        JOptionPane.showMessageDialog(null, "Course '"+name+"' has been added.", "Course Added", JOptionPane.PLAIN_MESSAGE);
-    }
-
-    public String[] getCourseDetails(Integer course){
-        return db.read("SELECT * FROM Course WHERE Course_Id = " + course + ";");
-    }
-
-    public String[] getModuleDetails(Integer module){
-        return db.read("SELECT * FROM Module WHERE Module_Id = " + module + ";");
-    }
 }
