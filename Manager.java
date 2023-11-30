@@ -924,16 +924,29 @@ public class Manager extends User{
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(750,400);
 
-        String[] students = db.read("SELECT sm.Student_Id FROM Student_Module sm INNER JOIN User u ON sm.Student_Id = u.User_Id WHERE u.Managed_By_Id = " + id + ";");
-        String[][] rowData = new String[students.length][6];
+        String[] students = db.read("SELECT DISTINCT sm.Student_Id FROM Student_Module sm INNER JOIN User u ON sm.Student_Id = u.User_Id WHERE u.Managed_By_Id = " + id + ";");
+
+        int counter = 0;
+        int resultlength = 0;
         for (int i = 0; i < students.length; i++) {
-            String[] result = db.read("SELECT * FROM Student_Module WHERE Student_Id = " + students[i] + ";");
-            rowData[i][0] = result[0];
-            rowData[i][1] = result[1];
-            rowData[i][2] = result[2];
-            rowData[i][3] = result[3];
-            rowData[i][4] = result[4];
-            rowData[i][5] = result[5];
+            String[] modules = db.read("SELECT Module_Id FROM Student_Module WHERE Student_Id = " + students[i] + ";");
+            for (int j = 0; j < modules.length; j++) {
+                resultlength++;
+            }
+        }
+        String[][] rowData = new String[resultlength][6];
+        for (int i = 0; i < students.length; i++) {
+            String[] modules = db.read("SELECT Module_Id FROM Student_Module WHERE Student_Id = " + students[i] + ";");
+            for (int j = 0; j < modules.length; j++) {
+                String[] result = db.read("SELECT * FROM Student_Module WHERE Student_Id = " + students[i] + " AND Module_Id = " + modules[j] + ";");
+                rowData[counter][0] = result[0];
+                rowData[counter][1] = result[1];
+                rowData[counter][2] = result[2];
+                rowData[counter][3] = result[3];
+                rowData[counter][4] = result[4];
+                rowData[counter][5] = result[5];
+                counter++;
+            }
         }
 
         String[] columnNames = {"Module Id", "Student Id", "Student Attempt No", "Exam Mark", "Lab Mark", "Decision"};
@@ -1141,12 +1154,12 @@ public class Manager extends User{
 
     public void addRuleCourse2(Integer course, Integer rule){
         String[] exists = db.read("SELECT Course_Id FROM Course WHERE Course_Id = "+course+";");
-        if(exists.length != 0){
+        if(exists.length == 0){
             JOptionPane.showMessageDialog(null, "Course does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         exists = db.read("SELECT Id FROM Business_Rules WHERE Id = "+rule+";");
-        if(exists.length != 0){
+        if(exists.length == 0){
             JOptionPane.showMessageDialog(null, "Business Rule does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -1223,12 +1236,12 @@ public class Manager extends User{
 
     public void remRuleCourse2(Integer course, Integer rule){
         String[] exists = db.read("SELECT Course_Id FROM Course WHERE Course_Id = "+course+";");
-        if(exists.length != 0){
+        if(exists.length == 0){
             JOptionPane.showMessageDialog(null, "Course does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         exists = db.read("SELECT Id FROM Business_Rules WHERE Id = "+rule+";");
-        if(exists.length != 0){
+        if(exists.length == 0){
             JOptionPane.showMessageDialog(null, "Business Rule does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -1302,12 +1315,12 @@ public class Manager extends User{
 
     public void addRuleModule2(Integer module, Integer rule){
         String[] exists = db.read("SELECT Module_Id FROM Module WHERE Module_Id = "+module+";");
-        if(exists.length != 0){
+        if(exists.length == 0){
             JOptionPane.showMessageDialog(null, "Module does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         exists = db.read("SELECT Id FROM Business_Rules WHERE Id = "+rule+";");
-        if(exists.length != 0){
+        if(exists.length == 0){
             JOptionPane.showMessageDialog(null, "Business Rule does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -1375,12 +1388,12 @@ public class Manager extends User{
 
     public void remRuleModule2(Integer module, Integer rule){
         String[] exists = db.read("SELECT Module_Id FROM Module WHERE Module_Id = "+module+";");
-        if(exists.length != 0){
+        if(exists.length == 0){
             JOptionPane.showMessageDialog(null, "Module does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         exists = db.read("SELECT Id FROM Business_Rules WHERE Id = "+rule+";");
-        if(exists.length != 0){
+        if(exists.length == 0){
             JOptionPane.showMessageDialog(null, "Business Rule does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
