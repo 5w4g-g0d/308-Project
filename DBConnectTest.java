@@ -27,8 +27,10 @@ class DBConnectTest {
     @Test
     void testWrite() {
         String statement = "INSERT INTO `User`(`Username`, `Password`, `User_Type`, `Email`, `First_Name`, `Surname`, `DOB`, `Qualification`, `Active`, `Registered`) VALUES ('Test','Test','Student', 'test@test.com','Test','Test' ,'1111-11-11', 'N/A',0 ,0)";
-        int rowsAffected = dbConnect.write(statement);
-        assertEquals(1, rowsAffected);
+        int written = dbConnect.write(statement);
+        assertEquals(1, written);
+        statement = "DELETE FROM `User` WHERE Username = 'Test' AND Active = '0'";
+        dbConnect.write(statement);
 
     }
 
