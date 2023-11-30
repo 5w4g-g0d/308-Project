@@ -15,7 +15,7 @@ public class DBConnect {
         String user = "" ;
         String password = "";
         try {// Reading the connection parameters from “config.txt” file
-            Scanner sc = new Scanner(new File("config.txt"));
+            Scanner sc = new Scanner(new File("DBconnect.txt"));
             if (sc.hasNextLine()) url = url + sc.nextLine()+"/";
             if (sc.hasNextLine()) dbName = sc.nextLine();
             if (sc.hasNextLine()) user = sc.nextLine();
