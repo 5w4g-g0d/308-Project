@@ -541,7 +541,7 @@ public class Driver {
     public void register1() {
         frame1.setVisible(false);
         frame1.dispose();
-        ImageIcon image = new ImageIcon("mongey.jpg");
+        ImageIcon image = new ImageIcon("logo.jpg");
         JFrame jregister = new JFrame();
         jregister.setTitle("Register");
         jregister.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

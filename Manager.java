@@ -506,6 +506,11 @@ public class Manager extends User{
             JOptionPane.showMessageDialog(null, "That lecturer Id does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        lexists = db.read("SELECT Lecturer_Id FROM Module;");
+        if (lexists.length != 0){
+            JOptionPane.showMessageDialog(null, "That lecturer already has a module", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String[] mexists = db.read("SELECT * FROM Module WHERE Module_Id = " + module + ";");
         if (mexists.length == 0){
             JOptionPane.showMessageDialog(null, "That module Id does not exist", "Error", JOptionPane.ERROR_MESSAGE);
@@ -740,7 +745,7 @@ public class Manager extends User{
         ImageIcon image = new ImageIcon("logo.jpg");
 
         JFrame frame = new JFrame();
-        frame.setTitle("update Course");
+        frame.setTitle("Update Course");
         frame.setIconImage(image.getImage());
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
