@@ -189,6 +189,7 @@ public class Manager extends User{
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1250,400);
 
+        manages = db.read("SELECT User_Id FROM User WHERE Managed_By_Id = " + id + ";");
         String[][] rowData = new String[manages.length][10];
         for (int i = 0; i < manages.length; i++) {
             String[] result = db.read("SELECT Username, User_Type, Email, First_Name, Surname, Gender, DOB, Qualification, Active FROM User WHERE User_Id = " + manages[i] + ";");
